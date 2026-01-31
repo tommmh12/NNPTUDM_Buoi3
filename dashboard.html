@@ -21,8 +21,10 @@
                 <h1>Products Dashboard</h1>
                 <p class="header-subtitle">Quản lý kho hàng & thống kê trực quan</p>
             </div>
-            <div class="header-actions">
-                <!-- Placeholder for future actions -->
+            <div class="header-actions search-container">
+                <i class="ri-search-line search-icon"></i>
+                <input type="text" id="searchInput" class="search-input" placeholder="Tìm kiếm sản phẩm..."
+                    autocomplete="off">
             </div>
         </header>
 
@@ -94,15 +96,21 @@
 
     <!-- Logic -->
     <script>
-        // Inline helper to keep image logic simple if needed, ensuring new class names are used
-        // The main logic is in dashboard.js (or the inline script from before).
+        // Global state to store products for client-side filtering
+        let allProducts = [];
+
+        function handleSearch(event) {
+            const searchTerm = event.target.value.toLowerCase().trim();
+            const filteredProducts = allProducts.filter(product =>
+                product.title.toLowerCase().includes(searchTerm)
+            );
+            displayProducts(filteredProducts);
+            // Optional: update stats to reflect search? keeping simple for now.
+        }
+
+        // Re-implementing the script logic inline for simplicity
+        // Checking previous file content: dashboard.html had BIG inline script. 
         // We will adapt the inline script to use new classes.
-    </script>
-    <script>
-        // Re-implementing the script logic inline for simplicity as the previous file had it inline 
-        // OR we can link to dashboard.js if it contained the render logic. 
-        // Checking previous file content: dashboard.html had BIG inline script. dashboard.js only had data fetching.
-        // So I need to put the render logic back here but updated for the new CSS.
 
         async function getAllProducts() {
             try {
@@ -119,13 +127,26 @@
             const tbody = document.getElementById('products-body');
             tbody.innerHTML = '';
 
+            if (products.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 2rem; color: var(--text-secondary);">Không tìm thấy sản phẩm nào.</td></tr>';
+                return;
+            }
+
             products.forEach(product => {
                 const row = document.createElement('tr');
 
-                // Get first image or placeholder
-                const imgUrl = (product.images && product.images.length > 0)
-                    ? product.images[0]
-                    : 'https://via.placeholder.com/60?text=No+Img';
+                // Create image gallery HTML
+                // Showing all images as requested ("hiển thị toàn bộ hình")
+                const imagesHTML = (product.images && product.images.length > 0)
+                    ? `<div class="image-gallery">
+                ${product.images.map(img =>
+                        `<img src="${img}" alt="${product.title}" class="product-img"
+                                 onerror="this.src='https://via.placeholder.com/50?text=Err'">`
+                    ).join('')}
+            </div>`
+                    : `<div class="image-gallery">
+                <img src="https://via.placeholder.com/50?text=No+Img" class="product-img">
+            </div>`;
 
                 // Safe description truncation
                 const description = product.description
@@ -135,18 +156,17 @@
                 const categoryName = product.category?.name || 'N/A';
 
                 row.innerHTML = `
-                    <td>#${product.id}</td>
-                    <td>
-                        <div class="flex items-center gap-4">
-                            <img src="${imgUrl}" alt="${product.title}" class="product-img"
-                                 onerror="this.src='https://via.placeholder.com/60?text=Error'">
-                            <span style="font-weight: 500;">${product.title}</span>
-                        </div>
-                    </td>
-                    <td><span class="price-tag">$${product.price}</span></td>
-                    <td><span class="category-badge">${categoryName}</span></td>
-                    <td style="color: var(--text-secondary);">${description}</td>
-                `;
+            <td>#${product.id}</td>
+            <td>
+                <div class="flex items-center gap-4">
+                    ${imagesHTML}
+                    <span style="font-weight: 500;">${product.title}</span>
+                </div>
+            </td>
+            <td><span class="price-tag">$${product.price}</span></td>
+            <td><span class="category-badge">${categoryName}</span></td>
+            <td style="color: var(--text-secondary);">${description}</td>
+            `;
 
                 tbody.appendChild(row);
             });
@@ -170,10 +190,15 @@
                 error.style.display = 'none';
                 tableContainer.style.display = 'none';
 
-                const products = await getAllProducts();
+                // Fetch and store in global variable
+                allProducts = await getAllProducts();
 
-                displayProducts(products);
-                updateStats(products);
+                displayProducts(allProducts);
+                updateStats(allProducts);
+
+                // Add event listener for search functionality
+                const searchInput = document.getElementById('searchInput');
+                searchInput.addEventListener('input', handleSearch);
 
                 loading.style.display = 'none';
                 tableContainer.style.display = 'block';
