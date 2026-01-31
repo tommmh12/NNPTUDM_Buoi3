@@ -328,6 +328,65 @@ tbody tr:hover .text-secondary {
     display: none;
 }
 
+/* Pagination */
+.pagination-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem;
+    border-top: 1px solid var(--border-color);
+    background: var(--surface-color);
+}
+
+.pagination-controls {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.page-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-color);
+    background: white;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.page-btn:hover:not(:disabled) {
+    background: #f3f4f6;
+    color: var(--text-primary);
+    border-color: #d1d5db;
+}
+
+.page-btn.active {
+    background: var(--primary-gradient);
+    color: white;
+    border-color: transparent;
+}
+
+.page-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background: #f9fafb;
+}
+
+.page-size-selector select {
+    padding: 0.5rem 2rem 0.5rem 1rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-color);
+    background: white;
+    color: var(--text-primary);
+    cursor: pointer;
+    outline: none;
+    font-size: 0.875rem;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
     body {
@@ -337,6 +396,11 @@ tbody tr:hover .text-secondary {
     .glass-header {
         flex-direction: column;
         text-align: center;
+        gap: 1rem;
+    }
+
+    .pagination-container {
+        flex-direction: column;
         gap: 1rem;
     }
 

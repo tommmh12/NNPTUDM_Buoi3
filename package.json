@@ -3,12 +3,24 @@
   "version": "1.0.0",
   "description": "Dashboard with product API integration",
   "main": "dashboard.js",
-  "type": "commonjs",
+  "type": "module",
   "scripts": {
     "start": "node dashboard.js",
     "test": "node test-dashboard.js"
   },
-  "keywords": ["dashboard", "api", "products"],
+  "keywords": [
+    "dashboard",
+    "api",
+    "products"
+  ],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tommmh12/NNPTUDM_Buoi3.git"
+  },
+  "bugs": {
+    "url": "https://github.com/tommmh12/NNPTUDM_Buoi3/issues"
+  },
+  "homepage": "https://github.com/tommmh12/NNPTUDM_Buoi3#readme"
 }
