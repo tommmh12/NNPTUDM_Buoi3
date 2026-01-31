@@ -1,0 +1,14 @@
+{
+  "name": "nnptudm_buoi3",
+  "version": "1.0.0",
+  "description": "Dashboard with product API integration",
+  "main": "dashboard.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node dashboard.js",
+    "test": "node test-dashboard.js"
+  },
+  "keywords": ["dashboard", "api", "products"],
+  "author": "",
+  "license": "ISC"
+}
